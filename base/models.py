@@ -34,13 +34,15 @@ class Division(models.Model):
 class Meeting(models.Model):
     description = models.CharField(max_length=100)
     secretary = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
-    protocol = models.FileField(upload_to='documents/', null=True, blank=True)
+    protocol = models.FilePathField(path='documents/', null=True, blank=True)
+    project_number = models.CharField(max_length=10, blank=True)
     division = models.ForeignKey(Division, on_delete=models.DO_NOTHING)
     date = models.DateField()
     time_start = models.TimeField()
-    time_end = models.TimeField()
+    time_end = models.TimeField(blank=True, null=True)
     is_scheduled = models.BooleanField(null=True)
     is_finished = models.BooleanField(default=False)
+    is_quorum = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.date) + ' ' + str(self.description)
@@ -80,9 +82,9 @@ class Question(models.Model):
 class Vote(models.Model):
     agree = models.BooleanField(blank=True)
     disagree = models.BooleanField(blank=True)
-    proposal = models.TextField()
+    proposal = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     question = models.ForeignKey(Question, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return str(self.user) + str(self.meeting)
+        return str(self.user) + ' - ' + str(self.question)

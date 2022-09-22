@@ -20,6 +20,12 @@ class VoteSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class MaterialSerializer(ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = '__all__'
+
+
 class TopicSerializer(ModelSerializer):
     class Meta:
         model = Topic

@@ -15,4 +15,10 @@ urlpatterns = [
     path('get_topics/', views.get_topics),
 
     path('vote/<int:question_key>', views.make_vote),
+    path('ready/<int:key>', views.set_ready),
+    path('finish/<int:key>', views.set_finished),
+
+    path('create_meeting', views.create_meeting),
+    path('create_material', views.create_material),
+    path('create_question', views.create_question),
 ]
