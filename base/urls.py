@@ -12,6 +12,7 @@ urlpatterns = [
     path('user/get_questions', views.get_user_questions),  # return questions in which user can vote
     path('meeting/<int:key>/get_questions', views.get_meeting_questions),
     path('question/<int:key>/get_votes', views.get_question_votes),
+    path('get_topics/', views.get_topics),
 
     path('vote/<int:question_key>', views.make_vote),
 ]

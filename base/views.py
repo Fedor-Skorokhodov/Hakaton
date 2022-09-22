@@ -3,8 +3,8 @@ from django.http import HttpResponseNotFound, HttpResponse
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Meeting, Question, Vote, Material, Division
-from .serializers import MeetingSerializer, QuestionSerializer, VoteSerializer
+from .models import Meeting, Question, Vote, Material, Division, Topic
+from .serializers import MeetingSerializer, QuestionSerializer, VoteSerializer, TopicSerializer
 
 
 @api_view(['GET'])
@@ -22,8 +22,10 @@ def get_meeting(request, key):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_question(request, key):
-    try: question = Question.objects.get(id=key)
-    except: return HttpResponseNotFound()
+    try:
+        question = Question.objects.get(id=key)
+    except:
+        return HttpResponseNotFound()
 
     serializer = QuestionSerializer(question)
     return Response(serializer.data)
@@ -69,8 +71,10 @@ def get_question_votes(request, key):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def make_vote(request, question_key):
-    try: question = Question.objects.get(id=question_key)
-    except: return HttpResponseNotFound()
+    try:
+        question = Question.objects.get(id=question_key)
+    except:
+        return HttpResponseNotFound()
 
     if not question in get_user_questions(request):
         return HttpResponse('Not allowed to vote')
@@ -86,3 +90,11 @@ def make_vote(request, question_key):
     vote.save()
 
     return HttpResponse('Success')
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_topics(request):
+    topics = Topic.objects.all()
+    serializer = TopicSerializer(topics, many=True)
+    return Response(serializer.data)
