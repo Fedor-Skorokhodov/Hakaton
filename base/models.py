@@ -13,8 +13,8 @@ class User(AbstractUser):
     iin = models.CharField(max_length=12)
     division = models.ForeignKey('Division', on_delete=models.DO_NOTHING, blank=True, null=True)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -56,8 +56,14 @@ class Material(models.Model):
 
 
 class Topic(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.TextField()
     description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['id']
 
 
 class Question(models.Model):
